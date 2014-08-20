@@ -9,11 +9,10 @@ import sys
 import datetime
 from bs4 import BeautifulSoup
 
-#gonna make global URL variable so I can use this scraper again, also setting up URL to 
-#be able to replace the year and suffix (th, st, rd)
+#make global URL variable so I can use this scraper again
 URL = "http://advisory.mtanyct.info/LPUWebServices/CurrentLostProperty.aspx"
 
-#go to MTA site and get the data
+#soup the data
 def get_data(url):
     response = requests.get(url)
     data = BeautifulSoup(response.text, "xml")
@@ -24,6 +23,7 @@ def parse_data(souped_data):
 
     #make the subcategories dictionary
     def make_dict(souped_category):
+        #little bit weird but want a dict of dicts
         subcategories = souped_category.find_all("SubCategory")
         return {subcategory["SubCategory"]: int(subcategory["count"]) for subcategory in subcategories}
 
