@@ -22,13 +22,27 @@ for (fileName in fileNames) {
 #combine all data 
 combineData <- rbind.fill(allData)
 data <- combineData
+#set NA columns to 0 (electronics activity tracker)
+data[is.na(data)] <- 0
 
-data$date <- parse_date_time(data$date, "%Y-%m-%d")
-head(data)
+#trying to calc percent change, but doesn't work because of files without certain columns? 
+change <- cbind(date=data$date,apply(data[c(-which(names(data)=="date"))],2,function(x)x/x[1]-1))
+View(change)
+head(change)
+tail(change)
 
+#force date
+change$date <- parse_date_time(change$date, "%Y-%m-%d")
+head(change)
+
+#try to gather change data
+changeData <- gather(change, items, change, -date)
+View(changeData)
+
+#gather on raw value data
 newData <- gather(data, items, amount, -date)
-View(newData)
 
+#plot raw counts
 plot <- ggplot(newData, aes(x = date, y = amount, group = items, col = items)) +
   geom_line()
 
