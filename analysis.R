@@ -26,6 +26,7 @@ data <- combineData
 #set NA columns to 0 (electronics activity tracker)
 data[is.na(data)] <- 0
 
+head(data)
 View(data)
 write.csv(data, file = "all-data.csv")
 
@@ -48,11 +49,11 @@ View(wallets)
 wallets$Month <- months(wallets$date)
 wallets$Year <- format(wallets$date, format='%y')
 
+#get montly data for wallets
 monData <- aggregate(Wallet.Purse.Wallet ~ Month + Year, wallets, mean)
 View(monData)
 
 #calculate weekly data for all items
-
 View(data)
 data$date <- parse_date_time(data$date, "%Y-%m-%d")
 df <- data.frame(data)
@@ -65,8 +66,9 @@ df$date <- parse_date_time(df$date, "%Y-%m-%d")
 month <- month(df$date)
 
 monthData <- df %>% mutate(month = month(date))
-View(monthData)
 head(monthData)
+View(monthData)
+
 
 #CHART CHANGE FROM CSV
 changeCSV <- read.csv("change.csv")
