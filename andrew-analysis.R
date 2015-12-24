@@ -34,7 +34,7 @@ plot
 cleanData %>% gather(items, total, -date) %>% 
     filter(date %>% c(dates[1], dates[242])) %>% 
     group_by(item)
-    summarize
+    summarize(change=)
     
     
 
